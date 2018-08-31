@@ -39,7 +39,11 @@ def get_eth_height():
 def get_eth_token_deposit(token_cfg):
     global eth_address
     contract = web3.eth.contract(address=Web3.toChecksumAddress(token_cfg["address"]), abi=token_cfg["abi"], ContractFactoryClass=ConciseContract)
-    return contract.balanceOf(eth_address)
+    balance = contract.balanceOf(eth_address)
+    if token_cfg["decimal"] > 8:
+        return balance / (10 ** (token_cfg["decimal"] - 8))
+    else:
+        return balance
 
 def draw(token_class):
     # just show latest 24 hours ?
