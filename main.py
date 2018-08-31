@@ -41,9 +41,9 @@ def get_eth_token_deposit(token_cfg):
     contract = web3.eth.contract(address=Web3.toChecksumAddress(token_cfg["address"]), abi=token_cfg["abi"], ContractFactoryClass=ConciseContract)
     balance = contract.balanceOf(eth_address)
     if token_cfg["decimal"] > 8:
-        return balance / (10 ** (token_cfg["decimal"] - 8))
+        return int(balance / (10 ** (token_cfg["decimal"] - 8)))
     else:
-        return balance
+        return int(balance)
 
 def draw(token_class):
     # just show latest 24 hours ?
@@ -89,7 +89,6 @@ def main():
             new_record.deposit = get_eth_token_deposit(token_class.contract_cfg)
 
             # with the same balance
-            import pdb; pdb.set_trace()
             if new_record == last_record:
                 last_record.timestamp = new_record.timestamp
                 last_record.heightM = new_record.heightM
