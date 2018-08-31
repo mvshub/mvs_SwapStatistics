@@ -89,6 +89,7 @@ def main():
             new_record.deposit = get_eth_token_deposit(token_class.contract_cfg)
 
             # with the same balance
+            import pdb; pdb.set_trace()
             if new_record == last_record:
                 last_record.timestamp = new_record.timestamp
                 last_record.heightM = new_record.heightM
