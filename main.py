@@ -7,7 +7,7 @@ from web3 import Web3
 from web3.contract import ConciseContract
 web3 = Web3(Web3.HTTPProvider("http://13.57.140.140:8545"))
 
-mvs_address = [i['address'] for i in mvs_rpc.getdid("droplet")[1] if i['status'] == 'current'][0]
+#mvs_address = [i['address'] for i in mvs_rpc.getdid("droplet")[1] if i['status'] == 'current'][0]
 eth_address = Web3.toChecksumAddress("0x7863669296c272ddc4b0bba3badb071087b8ca6c")
 
 import app
@@ -61,7 +61,7 @@ def draw(token_class):
     import matplotlib.pyplot as plt
     #group_labels = ['64k', '128k', '256k', '512k', '1024k', '2048k', '4096k', '8M', '16M', '32M', '64M', '128M', '256M',
     #                '512M']
-    plt.title('Token:%s -- Metaverse(b) vs Ethereum(r)' % token_class.__tablename__)
+    plt.title('Token:%s -- Metaverse vs Ethereum' % token_class.__tablename__)
     plt.xlabel('time(s)')
     plt.ylabel('Token Balance(wei)')
 
@@ -103,6 +103,7 @@ def main():
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
+        mvs_address = [i['address'] for i in mvs_rpc.getdid("droplet")[1] if i['status'] == 'current'][0]
         main()
     elif sys.argv[1] == 'draw':
         token_class_lst = app.init_app()
