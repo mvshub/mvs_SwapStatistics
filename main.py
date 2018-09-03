@@ -79,13 +79,13 @@ def main():
         heightM = get_mvs_height()
         heightE = get_eth_height()
         for token_class in token_class_lst:
-            last_records = app.db.session.query(token_class).order_by(token_class.iden.desc()).limit(2)
+            last_records = app.db.session.query(token_class).order_by(token_class.iden.desc()).limit(2).all()
 
             new_record = token_class()
             new_record.timestamp = now
             new_record.heightM = heightM
             new_record.heightE = heightE
-            new_record.circulation = get_mvs_token_circulation('ERC.'+token_class.__tablename__)
+            new_record.circulation = get_mvs_token_circulation('ERC20.'+token_class.__tablename__)
             new_record.deposit = get_eth_token_deposit(token_class.contract_cfg)
 
             if len(last_records) == 2:
