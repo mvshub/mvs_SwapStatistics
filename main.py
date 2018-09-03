@@ -79,7 +79,7 @@ def main():
         heightM = get_mvs_height()
         heightE = get_eth_height()
         for token_class in token_class_lst:
-            last_record = app.db.session.query(token_class).order_by(token_class.iden.desc()).first()
+            last_records = app.db.session.query(token_class).order_by(token_class.iden.desc()).limit(2)
 
             new_record = token_class()
             new_record.timestamp = now
@@ -88,14 +88,15 @@ def main():
             new_record.circulation = get_mvs_token_circulation('ERC.'+token_class.__tablename__)
             new_record.deposit = get_eth_token_deposit(token_class.contract_cfg)
 
-            # with the same balance
-            if new_record == last_record:
-                last_record.timestamp = new_record.timestamp
-                last_record.heightM = new_record.heightM
-                last_record.heightE = new_record.heightE
-                app.db.session.add(last_record)
-                app.db.session.commit()
-                continue
+            if len(last_records) == 2:
+                # with the same balance
+                if new_record == last_records[0] and last_records[0] == last_records[1]:
+                    last_records[0].timestamp = new_record.timestamp
+                    last_records[0].heightM = new_record.heightM
+                    last_records[0].heightE = new_record.heightE
+                    app.db.session.add(last_records[0])
+                    app.db.session.commit()
+                    continue
 
             app.db.session.add(new_record)
             app.db.session.commit()
